@@ -1,5 +1,5 @@
 /* BISMILLAH AR-RAHMAN AR-RAHEEM */
-/* In the Name of Allah (SWT) Most Gracious, Most Merciful */
+/* In the Name of ALLAH Most Gracious, Most Merciful */
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WebApiSample.Middlewares;

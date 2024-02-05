@@ -1,3 +1,7 @@
+   # <div align="center">&#xFDFD;</div>
+#### <div align="center">BISMILLAH AR-RAHMAN AR-RAHEEM</div>
+#### <div align="center">In the Name of ALLAH Most Gracious, Most Merciful</div>
+
 ## WebApiSample
 
 This project is intended to try out .NET Core features and also implement few scenarios related to Web API.
