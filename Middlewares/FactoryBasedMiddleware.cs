@@ -2,6 +2,11 @@
 {
     public class FactoryBasedMiddleware : IMiddleware
     {
+        public FactoryBasedMiddleware() 
+        {
+        
+        }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate requestDelegate)
         {
             context.Response.OnStarting(() => {

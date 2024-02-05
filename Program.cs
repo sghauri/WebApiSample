@@ -1,4 +1,9 @@
+/* BISMILLAH AR-RAHMAN AR-RAHEEM */
+/* In the Name of Allah (SWT) Most Gracious, Most Merciful */
+
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using WebApiSample.Middlewares;
+using WebApiSample.Services;
 
 namespace WebApiSample
 {
@@ -15,8 +20,19 @@ namespace WebApiSample
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // factory based middleware can have singleton, transient and scoped lifetime
+            // convention based middleware is singleton
             builder.Services.AddTransient<FactoryBasedMiddleware>();
+
+            /// add logging
+            //builder.Services.AddSingleton<ICustomLogger, SimpleLogger>();
+            //builder.Services.AddSingleton<ICustomLogger, DetailedLogger>();
             
+            /// This code is intended to demo the injection of multiple services implmenting the same interface:
+            /// following method will result in both implmentations being injected
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ICustomLogger, SimpleLogger>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ICustomLogger, DetailedLogger>());
+                        
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
