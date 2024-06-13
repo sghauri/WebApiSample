@@ -21,7 +21,7 @@ namespace WebApiSample
             builder.Services.AddSwaggerGen();
 
             // factory based middleware can have singleton, transient and scoped lifetime
-            // convention based middleware is singleton
+            // whereas convention based middleware is singleton
             builder.Services.AddTransient<FactoryBasedMiddleware>();
 
             /// add logging
@@ -60,8 +60,9 @@ namespace WebApiSample
 
             /// convention based middleware
             app.UseMiddleware<ConventionBasedMiddleware>();
-            /// factory baed middleware
-            app.UseMiddleware<FactoryBasedMiddleware>();
+            
+            /// factory baed middleware can be added like this as well
+            //app.UseMiddleware<FactoryBasedMiddleware>();
 
             app.MapControllers();
 
