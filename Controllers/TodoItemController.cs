@@ -2,6 +2,7 @@
 using WebApiSample.Middlewares;
 using WebApiSample.Models;
 using WebApiSample.Repositories;
+using WebApiSample.Services;
 
 namespace WebApiSample.Controllers
 {
@@ -9,6 +10,13 @@ namespace WebApiSample.Controllers
     [Route("api/[controller]")]
     public class TodoItemController : Controller
     {
+        private readonly IEnumerable<ICustomLogger> _customLoggers;
+
+        public TodoItemController(IEnumerable<ICustomLogger> customLoggers)
+        {
+            _customLoggers = customLoggers;
+        }
+        
         [HttpGet(Name ="GetAll")]
         public IEnumerable<TodoItem> Get()
         {
@@ -36,6 +44,12 @@ namespace WebApiSample.Controllers
                 Description = description,
                 Status = status
             };
+
+            var logMessage = $"TodoItemController -> Add() called with title: {title}, description: {description}, status: {status}";
+            foreach (var logger in _customLoggers) 
+            {
+                logger.Log(logMessage);
+            }
 
             var id = TodoItemRepository.SaveTodoItem(todoItem);
             if (id > 0)
