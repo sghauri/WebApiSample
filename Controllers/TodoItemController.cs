@@ -11,48 +11,60 @@ namespace WebApiSample.Controllers
     public class TodoItemController : Controller
     {
         private readonly IEnumerable<ICustomLogger> _customLoggers;
+        private readonly ITodoItemRepository _todoItemRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TodoItemController(IEnumerable<ICustomLogger> customLoggers)
+        public TodoItemController(IEnumerable<ICustomLogger> customLoggers, ITodoItemRepository todoItemRepository, IUnitOfWork unitOfWork)
         {
             _customLoggers = customLoggers;
+            _todoItemRepository = todoItemRepository;
+            _unitOfWork = unitOfWork;
         }
         
-        [HttpGet(Name ="GetAll")]
-        public IEnumerable<TodoItem> Get()
+        [HttpGet(Name = "GetAll")]
+        public async Task<IActionResult> Get()
         {
-            return TodoItemRepository.GetTodoItems();
+            var items = await _todoItemRepository.GetAllAsync();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var todoItem = TodoItemRepository.GetTodoItem(id);
-            if (todoItem == null) 
-            { 
+            var todoItem = await _todoItemRepository.GetAsync(id);
+            if (todoItem == null)
+            {
                 return NotFound();
             }
             return Ok(todoItem);
         }
 
+        [HttpGet("getByStatus/{status}")]
+        public async Task<IActionResult> GetByStatus(string status)
+        {
+            var todoItems = await _todoItemRepository.GetTasksByStatusAsync(status);
+            return Ok(todoItems);
+        }
+
         [HttpPost(Name = nameof(Add))]
         [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
-        public IActionResult Add(string title, string description, string status)
+        public async Task<IActionResult> Add(string title, string description, string status)
         {
             var todoItem = new TodoItem
             {
                 Title = title,
                 Description = description,
-                Status = status
+                Status = status,
+                CreatedDate = DateTime.UtcNow
             };
 
             var logMessage = $"TodoItemController -> Add() called with title: {title}, description: {description}, status: {status}";
-            foreach (var logger in _customLoggers) 
-            {
-                logger.Log(logMessage);
-            }
+            LogMessage(logMessage);
 
-            var id = TodoItemRepository.SaveTodoItem(todoItem);
-            if (id > 0)
+            _unitOfWork.TodoItems.Add(todoItem);
+            _unitOfWork.Commit();
+                        
+            if (todoItem.Id > 0)
             {
                 var actionName = nameof(Get);
                 var controllerName = ControllerContext.ActionDescriptor.ControllerName;
@@ -63,21 +75,34 @@ namespace WebApiSample.Controllers
                 {
                     action = actionName,
                     Controller = controllerName,
-                    Id = id
+                    Id = todoItem.Id
                 };
                 return CreatedAtRoute(routeValues, null);
             }
             return BadRequest();
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id) 
-        { 
-            if (TodoItemRepository.DeleteTodoItem(id))
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
             {
+                _unitOfWork.TodoItems.Delete(id);
+                _unitOfWork.Commit();
                 return NoContent();
             }
-            return NotFound();
+            catch
+            {
+                return NotFound($"Todo item with id: {id} was not found.");
+            }
+        }
+
+        private void LogMessage(string message) 
+        {
+            foreach (var logger in _customLoggers)
+            {
+                logger.Log(message);
+            }
         }
     }
 }

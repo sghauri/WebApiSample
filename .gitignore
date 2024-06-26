@@ -5,3 +5,6 @@
 /obj
 /.vs
 /bin/Debug/net6.0
+/sqlite.db
+/sqlite.db-shm
+/sqlite.db-wal

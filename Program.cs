@@ -2,7 +2,9 @@
 /* In the Name of ALLAH Most Gracious, Most Merciful */
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using WebApiSample.DataContext;
 using WebApiSample.Middlewares;
+using WebApiSample.Repositories;
 using WebApiSample.Services;
 
 namespace WebApiSample
@@ -12,6 +14,10 @@ namespace WebApiSample
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<TodoDbContext>();
+            builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Add services to the container.
 
