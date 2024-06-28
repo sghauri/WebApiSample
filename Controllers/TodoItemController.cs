@@ -48,17 +48,12 @@ namespace WebApiSample.Controllers
 
         [HttpPost(Name = nameof(Add))]
         [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
-        public async Task<IActionResult> Add(string title, string description, string status)
+        public async Task<IActionResult> Add([FromBody][Bind("Title, Description, Status")] TodoItem todoItem)
         {
-            var todoItem = new TodoItem
-            {
-                Title = title,
-                Description = description,
-                Status = status,
-                CreatedDate = DateTime.UtcNow
-            };
+            todoItem.CreatedDate = DateTime.Now;
 
-            var logMessage = $"TodoItemController -> Add() called with title: {title}, description: {description}, status: {status}";
+            var logMessage = $"TodoItemController -> Add() called with title: {todoItem.Title}, " +
+                             $" description: {todoItem.Description}, status: {todoItem.Status}";
             LogMessage(logMessage);
 
             _unitOfWork.TodoItems.Add(todoItem);
@@ -82,7 +77,38 @@ namespace WebApiSample.Controllers
             return BadRequest();
         }
 
+        [HttpPut("{id}", Name = nameof(Update))]
+        [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
+        public async Task<IActionResult> Update(int id, [FromBody][Bind("Title, Description, Status")] TodoItem todoItem)
+        {
+            if (todoItem == null)
+            {
+                return BadRequest("TodoItem is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("TodoItem is invalid");
+            }
+
+            var existingTodoItem = await _todoItemRepository.GetAsync(id);
+            if (existingTodoItem == null) 
+            {
+                return NotFound();
+            }
+
+            existingTodoItem.Title = todoItem.Title;
+            existingTodoItem.Description = todoItem.Description;
+            existingTodoItem.Status = todoItem.Status;
+
+            _unitOfWork.TodoItems.Update(existingTodoItem);
+            _unitOfWork.Commit();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
+        [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
         public IActionResult Delete(int id)
         {
             try

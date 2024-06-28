@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebApiSample.Models;
 
 namespace WebApiSample.Repositories
 {
-    public class EntityRepository<T> : IRepository<T> where T : class
+    public class EntityRepository<T> : IRepository<T> where T : BaseEntity 
     {
         protected readonly DbContext _dbContext;
         public EntityRepository(DbContext dbContext) 
@@ -29,17 +30,18 @@ namespace WebApiSample.Repositories
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _dbContext.Set<T>().Where(predicate).ToListAsync();
+            return await _dbContext.Set<T>().AsNoTracking().Where(predicate).ToListAsync();
         }
 
-        public async Task<T> GetAsync(int id)
+        public async Task<T?> GetAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            var entity = await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return entity;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public void Update(T entity)

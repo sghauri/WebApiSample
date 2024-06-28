@@ -26,6 +26,5 @@ This project is intended to try out .NET Core features and also implement few sc
 	2. Separate Project for data (Repositories, Unit of Work, Db Context).
 	3. Implement service to run migrations at application startup.
 
-* Use Request body (json) for POST endpoint
 * Tryout various dependency injection methodologies
 * Inject configuration (from appsettings.json) to a client class (controller or service) 
