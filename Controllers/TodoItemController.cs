@@ -36,17 +36,10 @@ namespace WebApiSample.Controllers
 
         [HttpPost(Name = nameof(Add))]
         [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
-        public IActionResult Add(string title, string description, string status)
+        public IActionResult Add([FromBody][Bind("Title,Description,Status")] TodoItem todoItem)
         {
-            var todoItem = new TodoItem
-            {
-                Title = title,
-                Description = description,
-                Status = status
-            };
-
-            var logMessage = $"TodoItemController -> Add() called with title: {title}, description: {description}, status: {status}";
-            foreach (var logger in _customLoggers) 
+            var logMessage = $"TodoItemController -> Add() called with title: {todoItem.Title}, description: {todoItem.Description}, status: {todoItem.Status}";
+            foreach (var logger in _customLoggers)
             {
                 logger.Log(logMessage);
             }
@@ -70,7 +63,34 @@ namespace WebApiSample.Controllers
             return BadRequest();
         }
 
+        [HttpPut("{id}", Name = nameof(Update))]
+        [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
+        public IActionResult Update(int id, [FromBody][Bind("Title,Description,Status")] TodoItem todoItem)
+        {
+            if (todoItem == null)
+            {
+                return BadRequest("TodoItem is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("TodoItem is invalid");
+            }
+            
+            var existingTodoItem = TodoItemRepository.GetTodoItem(id);
+            if (existingTodoItem == null)
+            {
+                return NotFound();
+            }
+            existingTodoItem.Title = todoItem.Title;
+            existingTodoItem.Description = todoItem.Description;
+            existingTodoItem.Status = todoItem.Status;
+
+            return NoContent();
+        }
+
         [HttpDelete]
+        [MiddlewareFilter(typeof(SecurityMiddlewareFilter))]
         public IActionResult Delete(int id) 
         { 
             if (TodoItemRepository.DeleteTodoItem(id))

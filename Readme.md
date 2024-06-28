@@ -21,6 +21,9 @@ This project is intended to try out .NET Core features and also implement few sc
 * In _TodoItemController_ constructor _IEnumerable_ parameter is used to receive all injected implementations.
 
 ##### Pending Items
+* [27-June-2024] Use 'AutoMapper' to map Dto class to entity class for scenarios such as PUT endpoint.
+	* see: https://code-maze.com/net-core-web-development-part5/
+
 * Use Request body (json) for POST endpoint
 * Tryout various dependency injection methodologies
 * Inject configuration (from appsettings.json) to a client class (controller or service) 
