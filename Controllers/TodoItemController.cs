@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApiSample.Middlewares;
-using WebApiSample.Models;
+using Domain.Entities;
 using WebApiSample.Repositories;
 using WebApiSample.Services;
 

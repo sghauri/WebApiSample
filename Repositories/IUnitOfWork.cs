@@ -1,6 +1,4 @@
-﻿using WebApiSample.Models;
-
-namespace WebApiSample.Repositories
+﻿namespace WebApiSample.Repositories
 {
     public interface IUnitOfWork
     {

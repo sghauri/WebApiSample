@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using WebApiSample.Models;
+using Domain.Entities;
 
 namespace WebApiSample.Repositories
 {

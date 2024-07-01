@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApiSample.Models;
+using Domain.Entities;
 
 namespace WebApiSample.DataContext
 {
@@ -12,7 +12,6 @@ namespace WebApiSample.DataContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlite(_connectionString)
                         .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, Microsoft.Extensions.Logging.LogLevel.Information)
                         .EnableSensitiveDataLogging();

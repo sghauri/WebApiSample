@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiSample.DataContext;
-using WebApiSample.Models;
+using Domain.Entities;
 
 namespace WebApiSample.Repositories
 {
