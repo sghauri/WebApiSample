@@ -8,3 +8,5 @@
 /sqlite.db
 /sqlite.db-shm
 /sqlite.db-wal
+/Domain/Domain/bin/Debug/net6.0
+/Domain/Domain/obj
