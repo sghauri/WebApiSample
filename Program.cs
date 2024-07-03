@@ -1,6 +1,7 @@
 /* BISMILLAH AR-RAHMAN AR-RAHEEM */
 /* In the Name of ALLAH Most Gracious, Most Merciful */
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using WebApiSample.DataContext;
 using WebApiSample.Middlewares;
@@ -15,7 +16,10 @@ namespace WebApiSample
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<TodoDbContext>();
+            builder.Services.AddDbContext<TodoDbContext>(options => 
+                                                            options.UseSqlite(builder.Configuration.GetConnectionString("TodoDbContext") ?? 
+                                                                    throw new InvalidOperationException("Connection string 'TodoDbContext' not found.")));
+
             builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

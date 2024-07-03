@@ -5,15 +5,12 @@ namespace WebApiSample.DataContext
 {
     public class TodoDbContext : DbContext
     {
-        private string _connectionString = "Data Source=sqlite.db";
-
         public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options) 
         { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_connectionString)
-                        .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, Microsoft.Extensions.Logging.LogLevel.Information)
+            optionsBuilder.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, Microsoft.Extensions.Logging.LogLevel.Information)
                         .EnableSensitiveDataLogging();
         }
 
