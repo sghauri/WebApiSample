@@ -7,28 +7,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DAL\**" />
+    <Compile Remove="DataContext\**" />
     <Compile Remove="Domain\**" />
+    <Compile Remove="Migrations\**" />
+    <Compile Remove="Repositories\**" />
+    <Content Remove="DAL\**" />
+    <Content Remove="DataContext\**" />
     <Content Remove="Domain\**" />
+    <Content Remove="Migrations\**" />
+    <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="DAL\**" />
+    <EmbeddedResource Remove="DataContext\**" />
     <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="DAL\**" />
+    <None Remove="DataContext\**" />
     <None Remove="Domain\**" />
+    <None Remove="Migrations\**" />
+    <None Remove="Repositories\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="DAL\DAL\DAL.csproj" />
     <ProjectReference Include="Domain\Domain\Domain.csproj" />
   </ItemGroup>
 

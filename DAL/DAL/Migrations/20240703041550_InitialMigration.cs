@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApiSample.Migrations
+namespace DAL.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -17,16 +17,21 @@ namespace WebApiSample.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Status = table.Column<string>(type: "TEXT", nullable: false)
+                    Status = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TodoItems", x => x.Id);
                 });
+
+            migrationBuilder.InsertData(
+                table: "TodoItems",
+                columns: new[] { "Id", "CreatedDate", "Description", "LastUpdatedDate", "Status", "Title" },
+                values: new object[] { 1, new DateTime(2024, 7, 3, 9, 15, 50, 129, DateTimeKind.Local).AddTicks(9609), "First to do item added via seed method of EF core.", null, "Not Started", "First Item" });
         }
 
         /// <inheritdoc />

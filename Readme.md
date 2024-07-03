@@ -20,11 +20,13 @@ This project is intended to try out .NET Core features and also implement few sc
 * In _Program.cs_, _builder.Services.TryAddEnumerable()_ method is used to inject all classes implmenting the same interface.
 * In _TodoItemController_ constructor _IEnumerable_ parameter is used to receive all injected implementations.
 
+#### 4. Entity Framework Core (SQLite)
+* Entities defined in the project _Domain_.
+* Entity Framework Core (using SQLite file database, code first approach) data context, migrations and repositories defined in the project _DAL_.
+
 ##### Pending Items
 * [branch: feature/db-context] Refractor code:
-	1. Separate Project for domain entities.
-	2. Separate Project for data (Repositories, Unit of Work, Db Context).
+	1. ~~Separate Project for domain entities.~~
+	2. ~~Separate Project for data (Repositories, Unit of Work, Db Context).~~
 	3. Implement service to run migrations at application startup.
-
-* Tryout various dependency injection methodologies
-* Inject configuration (from appsettings.json) to a client class (controller or service) 
+	4. Add index for 'Status' column in TodoItem table.

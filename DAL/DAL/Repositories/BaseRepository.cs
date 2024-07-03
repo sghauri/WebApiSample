@@ -2,16 +2,26 @@
 using System.Linq.Expressions;
 using Domain.Entities;
 
-namespace WebApiSample.Repositories
+namespace DAL.Repositories
 {
-    public class EntityRepository<T> : IRepository<T> where T : BaseEntity 
+    public interface IRepository<T> where T : BaseEntity
+    {
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T?> GetAsync(int id);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(int id);
+    }
+
+    public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly DbContext _dbContext;
-        public EntityRepository(DbContext dbContext) 
-        { 
+        protected BaseRepository(DbContext dbContext) 
+        {
             _dbContext = dbContext;
         }
-        
         public void Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);

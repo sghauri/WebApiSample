@@ -3,9 +3,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using WebApiSample.DataContext;
+using DAL.DataContext;
+using DAL.Repositories;
 using WebApiSample.Middlewares;
-using WebApiSample.Repositories;
 using WebApiSample.Services;
 
 namespace WebApiSample

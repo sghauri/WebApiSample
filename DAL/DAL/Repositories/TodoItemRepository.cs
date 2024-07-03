@@ -1,12 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApiSample.DataContext;
+﻿using DAL.DataContext;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebApiSample.Repositories
+namespace DAL.Repositories
 {
-    public class TodoItemRepository : EntityRepository<TodoItem>, ITodoItemRepository
+    public interface ITodoItemRepository : IRepository<TodoItem>
     {
-        public TodoItemRepository(TodoDbContext dbContext) : base(dbContext) 
+        Task<IEnumerable<TodoItem>> GetTasksByStatusAsync(string status);
+    }
+
+    public class TodoItemRepository : BaseRepository<TodoItem>, ITodoItemRepository
+    {
+        public TodoItemRepository(TodoDbContext dbContext) : base(dbContext)
         { }
 
         public async Task<IEnumerable<TodoItem>> GetTasksByStatusAsync(string status)

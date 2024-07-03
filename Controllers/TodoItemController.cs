@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApiSample.Middlewares;
 using Domain.Entities;
-using WebApiSample.Repositories;
+using DAL.Repositories;
 using WebApiSample.Services;
 
 namespace WebApiSample.Controllers

@@ -5,8 +5,11 @@
 /obj
 /.vs
 /bin/Debug/net6.0
-/sqlite.db
-/sqlite.db-shm
-/sqlite.db-wal
 /Domain/Domain/bin/Debug/net6.0
 /Domain/Domain/obj
+/DAL/DAL/obj
+/DAL/DAL/bin/Debug/net6.0
+/Assets/sqlite.db
+/Assets/sqlite.db
+/Assets/sqlite.db-shm
+/Assets/sqlite.db-wal
