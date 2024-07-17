@@ -13,3 +13,6 @@
 /Assets/sqlite.db
 /Assets/sqlite.db-shm
 /Assets/sqlite.db-wal
+/bin/Debug/net8.0
+/DAL/DAL/bin/Debug/net8.0
+/Domain/Domain/bin/Debug/net8.0
