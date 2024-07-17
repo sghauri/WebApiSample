@@ -25,8 +25,11 @@ This project is intended to try out .NET Core features and also implement few sc
 * Entity Framework Core (using SQLite file database, code first approach) data context, migrations and repositories defined in the project _DAL_.
 
 #### 5. OData (branch: feature/odata)
-* 'TodoItemV2Controller' is intended for OData.
+* _TodoItemV2Controller__ is intended for OData.
 * All projects updated to use 'net8.0' SDK.
+* Resources:
+	* https://www.mongodb.com/developer/languages/csharp/query-with-odata-mongodb-efcore-provider-dotnet/
+	* https://code-maze.com/aspnetcore-webapi-using-odata/	
 
 ##### Pending Items
 * [branch: feature/db-context] Refractor code:
