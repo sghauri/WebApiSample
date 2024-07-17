@@ -7,6 +7,12 @@ using DAL.DataContext;
 using DAL.Repositories;
 using WebApiSample.Middlewares;
 using WebApiSample.Services;
+using Microsoft.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+
+using Domain.Entities;
+using Microsoft.AspNetCore.OData;
 
 namespace WebApiSample
 {
@@ -16,16 +22,23 @@ namespace WebApiSample
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddAuthorization();
+            builder.Services.AddControllers().AddOData(options => options
+                                                                .AddRouteComponents("odata", GetEdmModel())
+                                                                .Select()
+                                                                .Filter()
+                                                                .OrderBy()
+                                                                .SetMaxTop(20)
+                                                                .Count()
+                                                                .Expand());
+
             builder.Services.AddDbContext<TodoDbContext>(options => 
                                                             options.UseSqlite(builder.Configuration.GetConnectionString("TodoDbContext") ?? 
                                                                     throw new InvalidOperationException("Connection string 'TodoDbContext' not found.")));
 
             builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
+                        
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -70,13 +83,20 @@ namespace WebApiSample
 
             /// convention based middleware
             app.UseMiddleware<ConventionBasedMiddleware>();
-            
+
             /// factory baed middleware can be added like this as well
             //app.UseMiddleware<FactoryBasedMiddleware>();
 
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<TodoItem>("TodoItemV2");
+            return builder.GetEdmModel();
         }
     }
 }

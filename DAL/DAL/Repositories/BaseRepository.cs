@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Domain.Entities;
 
 namespace DAL.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
         Task<IEnumerable<T>> GetAllAsync();
+        IQueryable<T> GetAllAsQueryable();
         Task<T?> GetAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
@@ -57,6 +58,11 @@ namespace DAL.Repositories
         public void Update(T entity)
         {
             _dbContext.Set<T>().Update(entity);
+        }
+
+        public IQueryable<T> GetAllAsQueryable()
+        {
+            return _dbContext.Set<T>().AsQueryable<T>();
         }
     }
 }
